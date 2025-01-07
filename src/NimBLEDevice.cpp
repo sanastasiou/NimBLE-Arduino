@@ -431,7 +431,7 @@ std::vector<NimBLEClient*> NimBLEDevice::getConnectedClients() {
  * @return The power level currently used in esp_power_level_t or a negative value on error.
  */
 esp_power_level_t NimBLEDevice::getPowerLevel(esp_ble_power_type_t powerType) {
-    const esp_power_level_t pwr = esp_ble_tx_power_get(powerType);
+    esp_power_level_t pwr = esp_ble_tx_power_get(powerType);
 
 #   if defined(CONFIG_IDF_TARGET_ESP32C3) || defined(CONFIG_IDF_TARGET_ESP32S3)
     // workaround for bug when "enhanced tx power" was added
@@ -498,7 +498,7 @@ int NimBLEDevice::getPower(const esp_ble_power_type_t powerType) {
 #  ifdef CONFIG_IDF_TARGET_ESP32P4
     return 0xFF; // CONFIG_IDF_TARGET_ESP32P4 does not support esp_ble_tx_power_get
 #  else
-    const int pwr = getPowerLevel(powerType);
+    int pwr = getPowerLevel(powerType);
     if (pwr < 0) {
         NIMBLE_LOGE(LOG_TAG, "esp_ble_tx_power_get failed rc=%d", pwr);
         return 0xFF;
